@@ -1,17 +1,21 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import mysql.connector
 import bcrypt
+from functools import wraps
 
 app = Flask(__name__)
 app.secret_key = 'Shakir is cool'  
 
 def get_db_connection():
     return mysql.connector.connect(
-        host='localhost',
+        host='centerbeam.proxy.rlwy.net',
         user='root',
-        password='Khan723492',
-        database='hospital_db'
+        password='kEPKdZOjlSUsRKoRZvfBXEQIpGhCjJTT',
+        database='railway',
+        port=23147
     )
+
+
 
 @app.route('/')
 def index():
@@ -38,7 +42,7 @@ def login():
 
         if user and bcrypt.checkpw(password, user['password'].encode('utf-8')):
             session['username'] = username
-            session['user_role'] = user['role']  # 'admin' or 'viewer'
+            session['user_role'] = user['role']
             flash('Logged in successfully.')
             return redirect(url_for('index'))
         else:
@@ -52,7 +56,6 @@ def logout():
     return redirect(url_for('index'))
 
 def admin_required(f):
-    from functools import wraps
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if session.get('user_role') != 'admin':
