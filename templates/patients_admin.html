@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head><title>Admin - Patients</title></head>
+<body>
+<nav>
+  <a href="{{ url_for('home') }}">Home</a> |
+  <a href="{{ url_for('add_patient') }}">Add Patient</a> |
+  <a href="{{ url_for('logout') }}">Logout</a>
+</nav>
+<h1>Admin: Manage Patients</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul>
+    {% for category, message in messages %}
+      <li style="color: {% if category == 'danger' %}red{% elif category == 'success' %}green{% else %}black{% endif %};">
+        {{ message }}
+      </li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>ID</th><th>Name</th><th>Age</th><th>Address</th><th>Gender</th><th>Blood Group</th><th>Mobile</th><th>Actions</th>
+    </tr>
+    {% for p in patients %}
+    <tr>
+        <td>{{ p[0] }}</td>
+        <td>{{ p[1] }}</td>
+        <td>{{ p[2] }}</td>
+        <td>{{ p[3] }}</td>
+        <td>{{ p[4] }}</td>
+        <td>{{ p[5] }}</td>
+        <td>{{ p[6] }}</td>
+        <td>
+            <a href="{{ url_for('edit_patient', pid=p[0]) }}">Edit</a> |
+            <form action="{{ url_for('delete_patient', pid=p[0]) }}" method="POST" style="display:inline;" onsubmit="return confirm('Delete this patient?');">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

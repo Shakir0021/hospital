@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4">Patients List</h2>
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Address</th>
+            <th>Gender</th>
+            <th>Blood Group</th>
+            <th>Mobile</th>
+            {% if session.get('user_role') == 'admin' %}
+                <th>Actions</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for patient in patients %}
+            <tr>
+                <td>{{ patient.pid }}</td>
+                <td>{{ patient.pname }}</td>
+                <td>{{ patient.age }}</td>
+                <td>{{ patient.address }}</td>
+                <td>{{ patient.gender }}</td>
+                <td>{{ patient.blood_group }}</td>
+                <td>{{ patient.mobile }}</td>
+                {% if session.get('user_role') == 'admin' %}
+                    <td>
+                        <a href="{{ url_for('edit_patient', pid=patient.pid) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{{ url_for('delete_patient', pid=patient.pid) }}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

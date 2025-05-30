@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4">{{ 'Edit' if patient else 'Add' }} Patient</h2>
+<form method="POST">
+    <div class="mb-3"><input type="text" name="pname" class="form-control" placeholder="Name" required value="{{ patient.pname if patient }}"></div>
+    <div class="mb-3"><input type="number" name="age" class="form-control" placeholder="Age" required value="{{ patient.age if patient }}"></div>
+    <div class="mb-3"><input type="text" name="address" class="form-control" placeholder="Address" required value="{{ patient.address if patient }}"></div>
+    <div class="mb-3">
+        <select name="gender" class="form-select" required>
+            <option disabled selected value="">Select Gender</option>
+            <option value="Male" {% if patient and patient.gender == 'Male' %}selected{% endif %}>Male</option>
+            <option value="Female" {% if patient and patient.gender == 'Female' %}selected{% endif %}>Female</option>
+            <option value="Other" {% if patient and patient.gender == 'Other' %}selected{% endif %}>Other</option>
+        </select>
+    </div>
+    <div class="mb-3"><input type="text" name="blood_group" class="form-control" placeholder="Blood Group" required value="{{ patient.blood_group if patient }}"></div>
+    <div class="mb-3"><input type="text" name="mobile" class="form-control" placeholder="Mobile Number" required value="{{ patient.mobile if patient }}"></div>
+    <button type="submit" class="btn btn-success">Save</button>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}
